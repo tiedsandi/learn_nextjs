@@ -3,7 +3,7 @@ import {redirect} from 'next/navigation';
 
 import {hashUserPassword, verifyPassword} from '@/lib/hash';
 import {createUser, getUserByEmail} from '@/lib/user';
-import {createAuthSession} from '@/lib/auth';
+import {createAuthSession, destroySession} from '@/lib/auth';
 
 export async function signup(prevState, formData) {
   const email = formData.get('email');
@@ -47,7 +47,6 @@ export async function login(prevState, formData) {
   const password = formData.get('password');
 
   const existingUser = getUserByEmail(email);
-  console.log(existingUser);
 
   if (!existingUser) {
     return {
@@ -77,4 +76,9 @@ export async function auth(mode, prevState, formData) {
   }
 
   return signup(prevState, formData);
+}
+
+export async function logout() {
+  await destroySession();
+  redirect('/');
 }
