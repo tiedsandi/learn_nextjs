@@ -5,7 +5,7 @@ import {BetterSqlite3Adapter} from '@lucia-auth/adapter-sqlite';
 import db from './db';
 
 const adapter = new BetterSqlite3Adapter(db, {
-  user: 'user',
+  user: 'users',
   session: 'sessions',
 });
 
@@ -23,4 +23,48 @@ export async function createAuthSession(userId) {
   const sessionCookie = lucia.createSessionCookie(session.id);
   // (await cookies()).set('session', sessionCookie); // for next.js version >=15
   cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+}
+
+export async function verifyAuth() {
+  const sessionCookie = cookies().get(lucia.sessionCookieName);
+  console.log(lucia.sessionCookieName);
+
+  if (!sessionCookie) {
+    return {
+      user: null,
+      session: null,
+    };
+  }
+
+  const sessionId = sessionCookie.value;
+
+  if (!sessionId) {
+    return {
+      user: null,
+      session: null,
+    };
+  }
+
+  const result = await lucia.validateSession(sessionId);
+
+  try {
+    if (result.session && result.session.fresh) {
+      const sessionCookie = lucia.createSessionCookie(result.session.id);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+    if (!result.session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
+    }
+  } catch {}
+
+  return result;
 }
