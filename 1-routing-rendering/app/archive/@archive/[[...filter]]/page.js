@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import NewsList from '@/components/news-list';
 import {
   getAvailableNewsMonths,
@@ -5,13 +7,12 @@ import {
   getNewsForYear,
   getNewsForYearAndMonth,
 } from '@/lib/news';
-import Link from 'next/link';
 
-export default async function FilteredNewsPage({params}) {
-  const {filter} = await params;
+export default function FilteredNewsPage({params}) {
+  const filter = params.filter;
 
-  const selectedYear = filter?.[0]; // filter? filter[0]: undefined
-  const selectedMonth = filter?.[1]; // filter? filter[1]: undefined
+  const selectedYear = filter?.[0];
+  const selectedMonth = filter?.[1];
 
   let news;
   let links = getAvailableNewsYears();
@@ -34,9 +35,9 @@ export default async function FilteredNewsPage({params}) {
 
   if (
     (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
-    (selectedMonth && !getAvailableNewsMonths().includes(+selectedMonth))
+    (selectedMonth && !getAvailableNewsMonths(selectedYear).includes(+selectedMonth))
   ) {
-    throw new Error('invalid filter nih.');
+    throw new Error('Invalid filter.');
   }
 
   return (
