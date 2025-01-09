@@ -7,7 +7,7 @@ export default async function NewsPage() {
   return (
     <>
       <h1>News Page</h1>
-      <NewsList news={news} />;
+      <NewsList news={news} />
     </>
   );
 }
