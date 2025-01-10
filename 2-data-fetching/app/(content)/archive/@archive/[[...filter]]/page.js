@@ -10,7 +10,7 @@ import {
 } from '@/lib/news';
 
 async function FilterHeader({year, month}) {
-  const availableYears = await getAvailableNewsYears();
+  const availableYears = await getAvailableNewsYears(); //kenapa perlu ada suspense karena ini
   let links = availableYears;
 
   if (
