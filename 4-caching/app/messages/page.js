@@ -1,12 +1,15 @@
 import Messages from '@/components/messages';
 
-export const revalidate = 10;
+// export const revalidate = 10;
 
 export default async function MessagesPage() {
   const response = await fetch('http://localhost:8080/messages', {
     // next: {
     //   revalidate: 10,
     // },
+    next: {
+      tags: ['msg'],
+    },
   });
   const messages = await response.json();
 
