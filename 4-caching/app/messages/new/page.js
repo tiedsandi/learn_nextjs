@@ -9,15 +9,9 @@ export default function NewMessagePage() {
 
     const message = formData.get('message');
     addMessage(message);
-
-    // revalidatePath('/messages', 'layout'); //revalidate /messages and nasted in /messages
-    // revalidatePath('/messages'); //only revalidate /messages
-    // revalidateTag('msg');
-
-    // penggunaan revalidateTag dan revalidatePath itu jika kita harus ngambil data di berbagai root, karena revalidate akan menulis satu satu seperti
     // revalidatePath('/messages');
-    // revalidatePath('/post');
-    // kita bisa pakai tag dan menuliskannya di fetching
+    revalidateTag('msg');
+
     redirect('/messages');
   }
 
