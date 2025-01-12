@@ -8,10 +8,11 @@ export default function NewMessagePage() {
     'use server';
 
     const message = formData.get('message');
-    // addMessage(message);
+    addMessage(message);
+
     // revalidatePath('/messages', 'layout'); //revalidate /messages and nasted in /messages
     // revalidatePath('/messages'); //only revalidate /messages
-    revalidateTag('msg');
+    // revalidateTag('msg');
 
     // penggunaan revalidateTag dan revalidatePath itu jika kita harus ngambil data di berbagai root, karena revalidate akan menulis satu satu seperti
     // revalidatePath('/messages');
