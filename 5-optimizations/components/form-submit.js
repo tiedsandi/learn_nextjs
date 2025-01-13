@@ -1,6 +1,6 @@
 'use client';
 
-import {useFormStatus} from 'react-dom';
+import { useFormStatus } from 'react-dom';
 
 export default function FormSubmit() {
   const status = useFormStatus(); //harus digunakna dalam tag form
@@ -12,7 +12,7 @@ export default function FormSubmit() {
 
   return (
     <>
-      <button type='reset'>Reset</button>
+      <button type="reset">Reset</button>
       <button>Create Post</button>
     </>
   );

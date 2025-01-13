@@ -1,17 +1,23 @@
 'use client';
 
-import {formatDate} from '@/lib/format';
+import { togglePostLikeStatus } from '@/actions/posts';
+import { formatDate } from '@/lib/format';
+import Image from 'next/image';
+import { useOptimistic } from 'react';
 import LikeButton from './like-icon';
-import {togglePostLikeStatus} from '@/actions/posts';
-import {useOptimistic} from 'react';
 
-function Post({post, action}) {
+function Post({ post, action }) {
   return (
-    <article className='post'>
-      <div className='post-image'>
-        <img src={post.image} alt={post.title} />
+    <article className="post">
+      <div className="post-image">
+        <Image
+          src={post.image}
+          fill //gunakan fill untuk size dan widht yang tidak di ketahui
+          alt={post.title}
+          sizes="20vw" // jangan lupa tambahkan properti ini dan cssnya relative dan widht height
+        />
       </div>
-      <div className='post-content'>
+      <div className="post-content">
         <header>
           <div>
             <h2>{post.title}</h2>
@@ -35,7 +41,7 @@ function Post({post, action}) {
   );
 }
 
-export default function Posts({posts}) {
+export default function Posts({ posts }) {
   const [optimisticPosts, updateOptimisticPosts] = useOptimistic(
     posts,
     (prevPosts, updatedPostId) => {
@@ -47,7 +53,7 @@ export default function Posts({posts}) {
         return prevPosts;
       }
 
-      const updatedPost = {...prevPosts[updatedPostIndex]};
+      const updatedPost = { ...prevPosts[updatedPostIndex] };
       updatedPost.likes = updatedPost.likes + (updatedPost.isLiked ? -1 : 1);
       updatedPost.isLiked = !updatedPost.isLiked;
       const newPosts = [...prevPosts];
@@ -66,7 +72,7 @@ export default function Posts({posts}) {
   }
 
   return (
-    <ul className='posts'>
+    <ul className="posts">
       {optimisticPosts.map((post) => (
         <li key={post.id}>
           <Post post={post} action={updatedPost} />
